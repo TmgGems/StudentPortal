@@ -1,8 +1,120 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Student Management";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentModal">
+    Add New Student
+</button>
+
+<div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentModalLabel">Register Student</h5>
+                <button data-bind="click:$root.ClosedModel" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="padding-top:40px">
+                        <div class="card-header text-center text-secondary">New Student</div>
+                        <div class="card-body" data-bind="with:NewStudent">
+                            <div class="form-group">
+                                <label for="FirstName">First Name</label>
+                                <input class="form-control" name="FirstName" data-bind="value: firstName" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="LastName">Last Name</label>
+                                <input class="form-control" name="LastName" data-bind="value: lastName" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="Faculty">Faculty</label>
+                                <input class="form-control" name="Faculty" data-bind="value: faculty" />
+                            </div>
+                            <div class="form-group">
+                                <label for="DOB">Date Of Birth</label>
+                                <input type="date" name="DOB" class="form-control" data-bind="value: dob" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                <input type="email" name="Email" class="form-control" data-bind="value: email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Gender">Gender</label><br />
+                                <input type="radio" name="Gender" value="Male" data-bind="checked: gender" /> Male
+                                <input type="radio" name="Gender" value="Female" data-bind="checked: gender" /> Female
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary" data-bs-dismiss="modal" data-bind="click: $root.AddStudent">
+                                <span data-bind="ifnot: IsUpdated">Add</span>
+                                <span data-bind="if: IsUpdated">Update</span>
+                            </button>
+                            <button class="btn btn-primary" data-bind="click: $root.resetForm">Reset</button>
+                        </div>
+                        <br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="d-flex justify-content-between">
+    <div>
+        <h1>Student Details</h1>
+    </div>
+    <div>
+        <input type="text" data-bind="value: searchTerm" class="form-control d-inline-block" placeholder="Search..." style="width: 200px;" />
+        <button class="btn btn-secondary mx-3" data-bind="click: $root.clickedSearch">Search</button>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SN</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Faculty</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Students">
+        <tr>
+            <td data-bind="text:$index() + $root.skipCount() + 1"></td>
+            <td data-bind="text:firstName"></td>
+            <td data-bind="text:lastName"></td>
+            <td data-bind="text:faculty"></td>
+            <td data-bind="text:dob"></td>
+            <td data-bind="text:email"></td>
+            <td data-bind="text:gender"></td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button data-bind="click: $root.SelectStudent" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#studentModal">Edit</button>
+                    <button data-bind="click: $root.DeleteStudent" class="btn btn-sm btn-danger">Delete</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between">
+    <button class="btn btn-secondary" data-bind="click: $root.PreviousData, visible: skipCount() > 0">Previous</button>
+    <button class="btn btn-secondary" data-bind="click: $root.NextData, visible: Students().length == take()">Next</button>
+</div>
+
+@section Scripts {
+    <script src="~/js/knockout.js"></script>
+    <script src="~/js/Student/Student.Model.js"></script>
+    <script src="~/js/Student/Student.Controller.js"></script>
+    <script>
+       
+            var obj = new StudentController();
+            ko.applyBindings(obj);
+        
+    </script>
+}
+

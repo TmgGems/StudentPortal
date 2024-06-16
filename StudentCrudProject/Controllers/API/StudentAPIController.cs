@@ -6,7 +6,7 @@ using StudentCrudProject.Services;
 
 namespace StudentCrudProject.Controllers.API
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class StudentAPIController : ControllerBase
     {
@@ -39,14 +39,14 @@ namespace StudentCrudProject.Controllers.API
             return student;
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
 
         public bool Add(StudentModel obj)
         {
             return (_studentService.Add(obj));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
 
         public void Update(StudentModel obj)
         {

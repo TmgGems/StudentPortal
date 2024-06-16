@@ -25,6 +25,6 @@ namespace StudentCrudProject.Models
         public string Email {  get; set; }
 
         [StringLength(10)]
-        public string Gender {  get; set; }
+        public string Gender { get; set; }
     }
 }
